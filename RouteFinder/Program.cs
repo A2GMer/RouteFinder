@@ -6,6 +6,10 @@ namespace RouteFinder
 {
     class Program
     {
+        // 始点ノード名
+        public static string startNodeName = "A";
+        // 終点ノード名
+        public static string endNodeName = "F";
         // ノード情報定義CSVファイルパス
         public static string nodesFilePath = "../../../testdata/nodes.csv";
         // エッジ情報定義CSVファイルパス
@@ -15,22 +19,38 @@ namespace RouteFinder
         {
             Graph graph = new Graph();
             // CSVファイルからノード(地点)情報を読み取り、ノードを追加
-            string[] nodesCsvLines = File.ReadAllLines(nodesFilePath);
-            foreach (var csvLine in nodesCsvLines)
-            {
-                var values = csvLine.Split(',').ToArray();
-                if (values.Count() == 3)
-                {
-                    string name = values[0];
-                    double latitude = double.Parse(values[1]);
-                    double longitude = double.Parse(values[2]);
-                    Node node = new Node(name, latitude, longitude);
-                    // グラフを作成
-                    graph.AddNode(node);
-                }
-            }
+            GetNodes(graph);
 
             // CSVファイルからエッジ(繋がり)情報を読み取り、エッジを追加
+            GetEdges(graph);
+
+            // ノードとエッジの位置関係を出力
+            graph.PrintGraph();
+
+            Console.WriteLine("");
+
+            // 最短経路を探索
+            List<List<Node>> shortestPaths = graph.FindShortestPath(startNodeName, endNodeName);
+            PrintShortestPaths(shortestPaths);
+        }
+
+        private static void PrintShortestPaths(List<List<Node>> shortestPaths)
+        {
+            Console.WriteLine("最短経路:");
+            foreach (var path in shortestPaths)
+            {
+                for (int i = 0; i < path.Count; i++)
+                {
+                    Console.Write($"{path[i].Name} (緯度: {path[i].Latitude}, 経度: {path[i].Longitude})");
+                    if (i < path.Count - 1)
+                        Console.Write(" => ");
+                }
+                Console.WriteLine();
+            }
+        }
+
+        private static void GetEdges(Graph graph)
+        {
             string[] edgeCsvLines = File.ReadAllLines(edgesFilePath);
             foreach (var csvLine in edgeCsvLines)
             {
@@ -45,26 +65,23 @@ namespace RouteFinder
                     graph.AddEdge(startNode, endNode);
                 }
             }
+        }
 
-            // ノードとエッジの位置関係を出力
-            graph.PrintGraph();
-            Console.WriteLine("");
-
-            // 最短経路を探索
-            string startNodeName = "A";
-            string endNodeName = "F";
-            List<List<Node>> shortestPaths = graph.FindShortestPath(startNodeName, endNodeName);
-
-            Console.WriteLine("最短経路:");
-            foreach (var path in shortestPaths)
+        private static void GetNodes(Graph graph)
+        {
+            string[] nodesCsvLines = File.ReadAllLines(nodesFilePath);
+            foreach (var csvLine in nodesCsvLines)
             {
-                for (int i = 0; i < path.Count; i++)
+                var values = csvLine.Split(',').ToArray();
+                if (values.Count() == 3)
                 {
-                    Console.Write($"{path[i].Name} (緯度: {path[i].Latitude}, 経度: {path[i].Longitude})");
-                    if (i < path.Count - 1)
-                        Console.Write(" => ");
+                    string name = values[0];
+                    double latitude = double.Parse(values[1]);
+                    double longitude = double.Parse(values[2]);
+                    Node node = new Node(name, latitude, longitude);
+                    // グラフを作成
+                    graph.AddNode(node);
                 }
-                Console.WriteLine();
             }
         }
     }
