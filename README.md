@@ -1,5 +1,7 @@
 # Dijkstraのアルゴリズムを使用したグラフベースの経路探索
 
+![](https://upload.wikimedia.org/wikipedia/commons/5/57/Dijkstra_Animation.gif)
+
 このC#プログラムは、Dijkstraのアルゴリズムを使用した経路探索を行います。ノードとエッジのグラフを作成し、2つのノード間の最短経路を計算し、グラフを視覚化します。
 
 ## 機能
