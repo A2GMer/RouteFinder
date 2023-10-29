@@ -31,10 +31,10 @@ namespace RouteFinder
 
             // 最短経路を探索
             List<List<Node>> shortestPaths = graph.FindShortestPath(startNodeName, endNodeName);
-            PrintShortestPaths(shortestPaths);
+            NewMethod(shortestPaths);
         }
 
-        private static void PrintShortestPaths(List<List<Node>> shortestPaths)
+        private static void NewMethod(List<List<Node>> shortestPaths)
         {
             Console.WriteLine("最短経路:");
             foreach (var path in shortestPaths)
@@ -51,7 +51,8 @@ namespace RouteFinder
 
         private static void GetEdges(Graph graph)
         {
-            string[] edgeCsvLines = File.ReadAllLines(edgesFilePath);
+            string[] edgeCsvLines = File.ReadAllLines(edgesFilePath)
+                .Skip(1).ToArray();
             foreach (var csvLine in edgeCsvLines)
             {
                 var values = csvLine.Split(',').ToArray();
@@ -69,7 +70,8 @@ namespace RouteFinder
 
         private static void GetNodes(Graph graph)
         {
-            string[] nodesCsvLines = File.ReadAllLines(nodesFilePath);
+            string[] nodesCsvLines = File.ReadAllLines(nodesFilePath)
+                .Skip(1).ToArray();
             foreach (var csvLine in nodesCsvLines)
             {
                 var values = csvLine.Split(',').ToArray();
