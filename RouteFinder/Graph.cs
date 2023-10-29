@@ -114,7 +114,6 @@ namespace RouteFinder
             return shortestPaths;
         }
 
-
         private List<Edge> GetNeighborEdges(Node node)
         {
             List<Edge> neighborEdges = new List<Edge>();
@@ -135,6 +134,73 @@ namespace RouteFinder
             }
         }
 
+        public List<List<Node>> FindAllPaths(string startNodeName, string endNodeName)
+        {
+            // すべての経路を保持するリスト
+            List<List<Node>> allPaths = new List<List<Node>>();
+            Node startNode = nodes[startNodeName];
+            Node endNode = nodes[endNodeName];
+
+            // 再帰的に経路を探索
+            FindAllPathsRecursive(startNode, endNode, new List<Node>(), allPaths);
+
+            // ソート: 最短経路から遠い順に表示
+            allPaths.Sort((path1, path2) =>
+            {
+                double cost1 = CalculatePathCost(path1);
+                double cost2 = CalculatePathCost(path2);
+                return cost2.CompareTo(cost1);
+            });
+
+            return allPaths;
+        }
+
+        private void FindAllPathsRecursive(Node currentNode, Node endNode, List<Node> currentPath, List<List<Node>> allPaths)
+        {
+            currentPath.Add(currentNode);
+
+            if (currentNode == endNode)
+            {
+                allPaths.Add(new List<Node>(currentPath));
+            }
+            else
+            {
+                foreach (var neighborEdge in GetNeighborEdges(currentNode))
+                {
+                    Node neighborNode = neighborEdge.End;
+                    if (!currentPath.Contains(neighborNode))
+                    {
+                        // 再帰的に次のノードを探索
+                        FindAllPathsRecursive(neighborNode, endNode, currentPath, allPaths);
+                    }
+                }
+            }
+
+            currentPath.Remove(currentNode);
+        }
+
+        private double CalculatePathCost(List<Node> path)
+        {
+            // 経路のコストを計算
+            double cost = 0;
+            for (int i = 0; i < path.Count - 1; i++)
+            {
+                Edge edge = GetEdgeBetweenNodes(path[i], path[i + 1]);
+                cost += edge.Cost;
+            }
+            return cost;
+        }
+
+        private Edge GetEdgeBetweenNodes(Node node1, Node node2)
+        {
+            // 2つのノード間のエッジを取得
+            foreach (var edge in edges)
+            {
+                if ((edge.Start == node1 && edge.End == node2) || (edge.Start == node2 && edge.End == node1))
+                    return edge;
+            }
+            return null; // エッジが見つからない場合
+        }
     }
 }
 

@@ -30,14 +30,21 @@ namespace RouteFinder
             Console.WriteLine("");
 
             // 最短経路を探索
+            Console.WriteLine("最短経路:");
             List<List<Node>> shortestPaths = graph.FindShortestPath(startNodeName, endNodeName);
-            NewMethod(shortestPaths);
+            PrintPath(shortestPaths);
+
+            Console.WriteLine("");
+
+            // 全経路を探索
+            Console.WriteLine("全経路:");
+            List<List<Node>> allPaths = graph.FindAllPaths(startNodeName, endNodeName);
+            PrintPath(allPaths);
         }
 
-        private static void NewMethod(List<List<Node>> shortestPaths)
+        private static void PrintPath(List<List<Node>> paths)
         {
-            Console.WriteLine("最短経路:");
-            foreach (var path in shortestPaths)
+            foreach (var path in paths)
             {
                 for (int i = 0; i < path.Count; i++)
                 {
