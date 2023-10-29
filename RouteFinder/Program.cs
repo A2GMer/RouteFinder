@@ -34,6 +34,10 @@ namespace RouteFinder
             graph.AddEdge("C", "F");
             graph.AddEdge("E", "F");
 
+            // ノードとエッジの位置関係を出力
+            graph.PrintGraph();
+            Console.WriteLine("");
+
             // 最短経路を探索
             string startNodeName = "A";
             string endNodeName = "F";

@@ -44,6 +44,11 @@ namespace RouteFinder
 
             return radius * c;
         }
+
+        public override string ToString()
+        {
+            return $"{Start} -- {End}";
+        }
     }
 }
 

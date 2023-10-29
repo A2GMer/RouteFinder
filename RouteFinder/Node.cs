@@ -18,6 +18,11 @@ namespace RouteFinder
             Latitude = latitude;
             Longitude = longitude;
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }
 

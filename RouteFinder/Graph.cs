@@ -126,6 +126,14 @@ namespace RouteFinder
             return neighborEdges;
         }
 
+        public void PrintGraph()
+        {
+            Console.WriteLine("ノードとエッジの位置関係:");
+            foreach (var edge in edges)
+            {
+                Console.WriteLine(edge);
+            }
+        }
     }
 }
 
