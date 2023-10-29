@@ -6,14 +6,17 @@ namespace RouteFinder
 {
     class Program
     {
+        // ノード情報定義CSVファイルパス
+        public static string nodesFilePath = "../../../testdata/nodes.csv";
+        // エッジ情報定義CSVファイルパス
+        public static string edgesFilePath = "../../../testdata/edges.csv";
+
         static void Main(string[] args)
         {
             Graph graph = new Graph();
-            // 設定ファイルからCSVファイルのパスを読み取る
-            string nodesFilePath = "../../../testdata/nodes.csv";
             // CSVファイルからノード(地点)情報を読み取り、ノードを追加
-            string[] csvLines = File.ReadAllLines(nodesFilePath);
-            foreach (var csvLine in csvLines)
+            string[] nodesCsvLines = File.ReadAllLines(nodesFilePath);
+            foreach (var csvLine in nodesCsvLines)
             {
                 var values = csvLine.Split(',').ToArray();
                 if (values.Count() == 3)
@@ -27,16 +30,21 @@ namespace RouteFinder
                 }
             }
 
-            // エッジを追加
-            // ここで各ノード(地点)との関係図を作成
-            // どこからどこへ行けるか？(繋がっているか？)を定義
-            graph.AddEdge("A", "B");
-            graph.AddEdge("B", "C");
-            graph.AddEdge("A", "D");
-            graph.AddEdge("D", "E");
-            graph.AddEdge("B", "E");
-            graph.AddEdge("C", "F");
-            graph.AddEdge("E", "F");
+            // CSVファイルからエッジ(繋がり)情報を読み取り、エッジを追加
+            string[] edgeCsvLines = File.ReadAllLines(edgesFilePath);
+            foreach (var csvLine in edgeCsvLines)
+            {
+                var values = csvLine.Split(',').ToArray();
+                if (values.Count() == 2)
+                {
+                    string startNode = values[0];
+                    string endNode = values[1];
+                    // エッジを追加
+                    // ここで各ノード(地点)との関係図を作成
+                    // どこからどこへ行けるか？(繋がっているか？)を定義
+                    graph.AddEdge(startNode, endNode);
+                }
+            }
 
             // ノードとエッジの位置関係を出力
             graph.PrintGraph();
