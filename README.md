@@ -14,7 +14,7 @@
 
 1. リポジトリをクローンします。
 2. C#プログラムをビルドし、実行します。
-3. 画面の指示に従って、グラフを探索し、最短経路を計算します。
+3. 画面の指示に従って、グラフを探索し、最短経路を計算します。(Not yet implemented.)
 
 
 
@@ -32,4 +32,4 @@ This C# program demonstrates route planning using Dijkstra's algorithm. It creat
 
 1. Clone the repository.
 2. Build and run the C# program.
-3. Follow the on-screen instructions to explore and calculate shortest paths.
+3. Follow the on-screen instructions to explore and calculate shortest paths.(Not yet implemented.)
